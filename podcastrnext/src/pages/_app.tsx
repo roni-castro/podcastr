@@ -2,6 +2,7 @@ import { Header } from '../components/Header';
 import React from 'react';
 import '../styles/global.css';
 import styles from '../styles/app.module.scss';
+import { Player } from '../components/Player';
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -10,6 +11,7 @@ function MyApp({ Component, pageProps }) {
         <Header />
         <Component {...pageProps} />
       </main>
+      <Player />
     </div>
   );
 }
