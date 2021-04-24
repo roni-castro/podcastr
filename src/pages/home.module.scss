@@ -1,0 +1,117 @@
+.homePageContainer {
+  padding: 0 4rem;
+  height: calc(100vh - 6.5rem);
+  overflow-y: scroll;
+
+  h2 {
+    margin-top: 3rem;
+    margin-bottom: 1.5rem;
+  }
+}
+
+.latestEpisodes {
+  ul {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+
+    li {
+      position: relative;
+      display: flex;
+      background-color: var(--white);
+      border: 1px solid var(--gray-100);
+      padding: 1.25rem;
+      border-radius: 1.5rem;
+
+      img {
+        width: 6rem;
+        height: 6rem;
+        border-radius: 1rem;
+      }
+    }
+
+    .episodeDetails {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      margin-left: 1rem;
+
+      a {
+        line-height: 1.4rem;
+        display: block;
+        font-weight: 600;
+        text-decoration: none;
+        color: var(--gray-800);
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+
+      p {
+        font-family: Inter, sans-serif;
+        font-weight: 400;
+        color: var(--gray-500);
+        font-size: 0.875rem;
+        max-width: 80%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      span {
+        display: inline-block;
+        margin-top: 0.5rem;
+        font-size: 0.875rem;
+
+        &:last-child {
+          margin-left: 0.5rem;
+          padding-left: 0.5rem;
+          position: relative;
+
+          &::before {
+            content: "";
+            width: 4px;
+            height: 4px;
+            border-radius: 2px;
+            background-color: var(--gray-500);
+            position: absolute;
+            top: 50%;
+            left: 0;
+            transform: translate(-50%, -50%);
+          }
+        }
+      }
+    }
+
+    button {
+      width: 2.5rem;
+      height: 2.5rem;
+      position: absolute;
+      right: 2rem;
+      bottom: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 0.625rem;
+      background-color: var(--white);
+      border: 1px solid var(--gray-100);
+      font-size: 0;
+
+      transition: filter 0.3s;
+
+      &:hover {
+        filter: brightness(0.9);
+      }
+
+      img {
+        width: 1.5rem;
+        height: 1.5rem;
+      }
+    }
+  }
+}
+
+.allEpisodes {
+}

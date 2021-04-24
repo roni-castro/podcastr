@@ -1,10 +1,12 @@
 import React from 'react';
+import Image from 'next/image';
 import { api } from '../api';
 import { EpisodeData } from '../models/data/episode';
 import format from 'date-fns/format';
 import ptBR from 'date-fns/locale/pt-BR';
 import { parseISO } from 'date-fns';
 import { convertDurationToTimeFormatted } from '../utils/time';
+import styles from './home.module.scss';
 
 interface EpisodeVM {
   id: string;
@@ -22,10 +24,31 @@ export interface HomeProps {
 
 export default function Home({ latestEpisodes, allEpisodes }: HomeProps) {
 
-  return <>
-    <div>{JSON.stringify(latestEpisodes)}</div>
-    <div>{JSON.stringify(allEpisodes)}</div>
-  </>;
+  return (
+    <div className={styles.homePageContainer}>
+      <section className={styles.latestEpisodes}>
+        <h2 >Últimos lançamentos</h2>
+        <ul>
+          {latestEpisodes.map(latestEpisode => (
+            <li key={latestEpisode.id}>
+              <Image width={288} height={288} src={latestEpisode.thumbnail} alt={latestEpisode.title} objectFit="cover" />
+              <div className={styles.episodeDetails}>
+                <a href="">{latestEpisode.title}</a>
+                <p>{latestEpisode.members}</p>
+                <div>
+                  <span>{latestEpisode.publishedAtFormatted}</span>
+                  <span>{latestEpisode.durationFormatted}</span>
+                </div>
+              </div>
+              <button>
+                <img src="/play-green.svg" alt="Ver detalhes" />
+              </button>
+            </li>
+          ))}
+        </ul>
+      </section>
+    </div >
+  );
 }
 
 function mapEpisodesDataToHomeProps(episodesData: EpisodeData[]): HomeProps {
