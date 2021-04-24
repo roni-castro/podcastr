@@ -30,10 +30,18 @@ export default function Home({ latestEpisodes, allEpisodes }: HomeProps) {
 
 function mapEpisodesDataToHomeProps(episodesData: EpisodeData[]): HomeProps {
   const allEpisodes: EpisodeVM[] = episodesData.map(episodeData => {
-    const { id, members, title, published_at, thumbnail, file } = episodeData;
-    const publishedAtFormatted = format(parseISO(published_at), 'd MMM yy', { locale: ptBR });
-    const durationFormatted = convertDurationToTimeFormatted(file.duration);
-    return { id, title, members, thumbnail, publishedAtFormatted, durationFormatted };
+    const publishedAtFormatted =
+      format(parseISO(episodeData.published_at), 'd MMM yy', { locale: ptBR });
+    const durationFormatted =
+      convertDurationToTimeFormatted(episodeData.file.duration);
+    return {
+      id: episodeData.id,
+      title: episodeData.title,
+      members: episodeData.members,
+      thumbnail: episodeData.thumbnail,
+      publishedAtFormatted,
+      durationFormatted
+    };
   });
   const latestEpisodes = allEpisodes.slice(0, 2);
   return { latestEpisodes, allEpisodes };
