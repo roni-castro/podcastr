@@ -41,7 +41,13 @@ function mapEpisodesDataToHomeProps(episodesData: EpisodeData[]): HomeProps {
 
 export async function getStaticProps() {
   try {
-    const response = await api.get<EpisodeData[]>('episodes');
+    const response = await api.get<EpisodeData[]>('episodes', {
+      params: {
+        _limit: 12,
+        _sort: 'published_at',
+        _order: 'desc'
+      }
+    });
     const episodesData = await response.data;
     return {
       props: { ...mapEpisodesDataToHomeProps(episodesData) },
