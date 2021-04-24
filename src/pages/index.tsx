@@ -1,18 +1,50 @@
 import React from 'react';
+import { api } from '../api';
+import { EpisodeData } from '../models/data/episode';
+import format from 'date-fns/format';
+import ptBR from 'date-fns/locale/pt-BR';
+import { parseISO } from 'date-fns';
+import { convertDurationToTimeFormatted } from '../utils/time';
 
-export default function Home({ episodes }) {
+interface EpisodeVM {
+  id: string;
+  title: string;
+  members: string;
+  publishedAtFormatted: string;
+  durationFormatted: string;
+  thumbnail: string;
+}
 
-  return <div>{JSON.stringify(episodes)}</div>;
+export interface HomeProps {
+  latestEpisodes: EpisodeVM[];
+  allEpisodes: EpisodeVM[];
+}
+
+export default function Home({ latestEpisodes, allEpisodes }: HomeProps) {
+
+  return <>
+    <div>{JSON.stringify(latestEpisodes)}</div>
+    <div>{JSON.stringify(allEpisodes)}</div>
+  </>;
+}
+
+function mapEpisodesDataToHomeProps(episodesData: EpisodeData[]): HomeProps {
+  const allEpisodes: EpisodeVM[] = episodesData.map(episodeData => {
+    const { id, members, title, published_at, thumbnail, file } = episodeData;
+    const publishedAtFormatted = format(parseISO(published_at), 'd MMM yy', { locale: ptBR });
+    const durationFormatted = convertDurationToTimeFormatted(file.duration);
+    return { id, title, members, thumbnail, publishedAtFormatted, durationFormatted };
+  });
+  const latestEpisodes = allEpisodes.slice(0, 2);
+  return { latestEpisodes, allEpisodes };
 }
 
 export async function getStaticProps() {
   try {
-    const response = await fetch('http://localhost:3333/episodes');
-    const data = await response.json();
+    const response = await api.get<EpisodeData[]>('episodes');
+    const episodesData = await response.data;
     return {
-      props: {
-        episodes: data
-      },
+      props: { ...mapEpisodesDataToHomeProps(episodesData) },
       revalidate: 60 * 60 * 8
     };
   } catch (error) {
