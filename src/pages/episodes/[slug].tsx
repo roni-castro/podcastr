@@ -1,4 +1,5 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
+import { useRouter } from 'next/router';
 import { api } from '../../api';
 import { format, parseISO } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
@@ -23,6 +24,12 @@ export interface EpisodeProps {
 }
 
 export default function Episode({ episode }: EpisodeProps) {
+  const route = useRouter();
+
+  if (route.isFallback) {
+    return <p>Carregando...</p>;
+  }
+
   return (
     <div className={styles.episode}>
       <div className={styles.imageContainer}>
@@ -57,29 +64,44 @@ export default function Episode({ episode }: EpisodeProps) {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
+  const { data } = await api.get<EpisodeData[]>('episodes', {
+    params: {
+      _limit: 2,
+      _sort: 'published_at',
+      _order: 'desc'
+    }
+  });
+
+  const paths = data.map(episode => ({
+    params: { slug: episode.id }
+  }));
+
   return {
-    paths: [],
+    paths,
     fallback: 'blocking'
   };
 };
+
+function mapEpisodeDataToEpisodeDetailVM(episode: EpisodeData) {
+  const publishedAtFormatted =
+    format(parseISO(episode.published_at), 'd MMM yy', { locale: ptBR });
+  const durationFormatted = convertDurationToTimeFormatted(episode.file.duration);
+  return {
+    id: episode.id,
+    title: episode.title,
+    members: episode.members,
+    description: episode.description,
+    thumbnail: episode.thumbnail,
+    publishedAtFormatted,
+    durationFormatted
+  };
+}
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
   const { slug } = ctx.params;
 
   const { data } = await api.get<EpisodeData>(`/episodes/${slug}`);
-
-  const publishedAtFormatted =
-    format(parseISO(data.published_at), 'd MMM yy', { locale: ptBR });
-  const durationFormatted = convertDurationToTimeFormatted(data.file.duration);
-  const episode = {
-    id: data.id,
-    title: data.title,
-    members: data.members,
-    description: data.description,
-    thumbnail: data.thumbnail,
-    publishedAtFormatted,
-    durationFormatted
-  };
+  const episode = mapEpisodeDataToEpisodeDetailVM(data);
   return {
     props: { episode },
     revalidate: 60 * 60 * 24 //24 hours
