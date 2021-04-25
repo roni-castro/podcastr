@@ -94,4 +94,46 @@
 }
 
 .allEpisodes {
+  table {
+    width: 100%;
+
+    th {
+      font: 500 0.75rem Lexend, sans-serif;
+      color: var(--gray-200);
+      text-transform: uppercase;
+    }
+
+    th,
+    td {
+      border-bottom: solid 1px var(--gray-100);
+      text-align: left;
+      padding: 0.75rem;
+    }
+
+    td {
+      font: 400 0.875rem Inter, sans-serif;
+      color: var(--gray-500);
+
+      img {
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: 1rem;
+      }
+
+      a {
+        margin-left: 1rem;
+        line-height: 1.4rem;
+        display: block;
+        font-weight: 600;
+        text-decoration: none;
+        color: var(--gray-800);
+        font: 600 1rem Lexend, sans-serif;
+        line-height: 1.25rem;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
 }

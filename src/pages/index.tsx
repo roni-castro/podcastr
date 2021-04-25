@@ -49,12 +49,49 @@ export default function Home({ latestEpisodes, allEpisodes }: HomeProps) {
                 </div>
               </div>
               <div className={styles.button}>
-                <PlayGreenButton onClick={() => console.log('clicked')} />
+                <PlayGreenButton containerSize="2.5rem" iconSize="1.5rem" onClick={() => console.log('clicked')} />
               </div>
             </li>
           ))}
         </ul>
       </section>
+      <section className={styles.allEpisodes}>
+        <h2 >Todos os episódios</h2>
+        <table cellSpacing={0}>
+          <thead>
+            <tr>
+              <th colSpan={2}>Podcast</th>
+              <th>Integrantes</th>
+              <th>Data</th>
+              <th colSpan={2}>Duração</th>
+            </tr>
+          </thead>
+          <tbody>
+            {allEpisodes.map(episode => (
+              <tr key={episode.id}>
+                <td style={{ width: 72 }}>
+                  <Image
+                    className={styles.thumbnail}
+                    src={episode.thumbnail}
+                    alt={episode.title}
+                    width={192}
+                    height={192}
+                    objectFit="cover"
+                  />
+                </td>
+                <td><a href="">{episode.title}</a></td>
+                <td>{episode.members}</td>
+                <td style={{ width: 100 }}>{episode.publishedAtFormatted}</td>
+                <td>{episode.durationFormatted}</td>
+                <td>
+                  <PlayGreenButton containerSize="2rem" iconSize="1rem" onClick={() => console.log('clicked')} />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </section>
+
     </div >
   );
 }
