@@ -1,14 +1,20 @@
 import styles from './styles.module.scss';
 
 interface PlayGreenButtonProps {
+  containerSize: string;
+  iconSize: string;
   onClick: () => void;
 }
 
-export function PlayGreenButton({ onClick }: PlayGreenButtonProps) {
+export function PlayGreenButton({ onClick, containerSize, iconSize }: PlayGreenButtonProps) {
   return (
-    <button className={styles.buttonCard} onClick={onClick}>
+    <button
+      style={{ width: containerSize, height: containerSize }}
+      className={styles.buttonCard}
+      onClick={onClick}
+    >
       <img
-        style={{ width: '1.5rem', height: '1.5rem' }}
+        style={{ width: iconSize, height: iconSize }}
         src="/play-green.svg"
         alt="Ver detalhes"
       />
