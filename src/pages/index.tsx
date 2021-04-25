@@ -7,6 +7,7 @@ import ptBR from 'date-fns/locale/pt-BR';
 import { parseISO } from 'date-fns';
 import { convertDurationToTimeFormatted } from '../utils/time';
 import styles from './home.module.scss';
+import { PlayGreenButton } from '../components/PlayGreenButton';
 
 interface EpisodeVM {
   id: string;
@@ -29,20 +30,27 @@ export default function Home({ latestEpisodes, allEpisodes }: HomeProps) {
       <section className={styles.latestEpisodes}>
         <h2 >Últimos lançamentos</h2>
         <ul>
-          {latestEpisodes.map(latestEpisode => (
-            <li key={latestEpisode.id}>
-              <Image width={288} height={288} src={latestEpisode.thumbnail} alt={latestEpisode.title} objectFit="cover" />
+          {latestEpisodes.map(episode => (
+            <li key={episode.id}>
+              <Image
+                className={styles.thumbnail}
+                src={episode.thumbnail}
+                alt={episode.title}
+                width={192}
+                height={192}
+                objectFit="cover"
+              />
               <div className={styles.episodeDetails}>
-                <a href="">{latestEpisode.title}</a>
-                <p>{latestEpisode.members}</p>
+                <a href="">{episode.title}</a>
+                <p>{episode.members}</p>
                 <div>
-                  <span>{latestEpisode.publishedAtFormatted}</span>
-                  <span>{latestEpisode.durationFormatted}</span>
+                  <span>{episode.publishedAtFormatted}</span>
+                  <span>{episode.durationFormatted}</span>
                 </div>
               </div>
-              <button>
-                <img src="/play-green.svg" alt="Ver detalhes" />
-              </button>
+              <div className={styles.button}>
+                <PlayGreenButton onClick={() => console.log('clicked')} />
+              </div>
             </li>
           ))}
         </ul>
