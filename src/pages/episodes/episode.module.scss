@@ -1,21 +1,24 @@
 .episode {
   height: calc(100vh - 6.5rem);
   overflow-y: scroll;
-  padding: 0rem 11.25rem;
+  padding: 3rem 2rem;
+  max-width: 45rem;
+  margin: 0 auto;
 
-  .headerImage {
+  .imageContainer {
     position: relative;
-    margin-top: 3rem;
+
+    img {
+      border-radius: 1rem;
+    }
 
     button {
       position: absolute;
       width: 3rem;
       height: 3rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
       border-radius: 0.75rem;
       border: 0;
+      z-index: 1;
       font-size: 0;
       transition: filter 0.3s;
 
@@ -23,23 +26,19 @@
         filter: brightness(0.9);
       }
 
-      img {
-        color: var(--white);
+      &:first-child {
+        background-color: var(--purple-500);
+        transform: translate(-50%, -50%);
+        top: 50%;
+        left: 0;
       }
-    }
 
-    button:nth-of-type(1) {
-      background-color: var(--purple-500);
-      transform: translate(-50%, -50%);
-      top: 50%;
-      left: 0;
-    }
-
-    button:nth-of-type(2) {
-      background-color: var(--green-500);
-      transform: translate(50%, -50%);
-      top: 50%;
-      right: 0;
+      &:last-child {
+        background-color: var(--green-500);
+        transform: translate(50%, -50%);
+        top: 50%;
+        right: 0;
+      }
     }
   }
 
@@ -47,6 +46,7 @@
     margin: 0 1rem;
 
     h2 {
+      margin-top: 2rem;
       margin-bottom: 1.5rem;
     }
 
@@ -55,7 +55,7 @@
       font: 400 0.875rem Inter, sans-serif;
       color: var(--gray-500);
 
-      &:nth-child(n + 2):nth-child(-n + 3) {
+      & + span {
         margin-left: 1rem;
         padding-left: 1rem;
         position: relative;
@@ -80,7 +80,7 @@
       border: 1px solid var(--gray-100);
     }
 
-    .description {
+    p {
       font: 400 1rem Inter, sans-serif;
       line-height: 1.625rem;
       color: var(--gray-800);

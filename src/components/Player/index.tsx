@@ -5,7 +5,7 @@ export function Player() {
   return (
     <div className={styles.playerContainer}>
       <header className={styles.header}>
-        <img src="./playing.svg" alt="headphone" />
+        <img src="/playing.svg" alt="headphone" />
         <strong>Tocando agora</strong>
       </header>
 

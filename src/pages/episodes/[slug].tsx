@@ -6,6 +6,7 @@ import styles from './episode.module.scss';
 import { convertDurationToTimeFormatted } from '../../utils/time';
 import { EpisodeData } from '../../models/data/episode';
 import Image from 'next/image';
+import Link from 'next/link';
 
 interface EpisodeDetailVM {
   id: string;
@@ -24,7 +25,12 @@ export interface EpisodeProps {
 export default function Episode({ episode }: EpisodeProps) {
   return (
     <div className={styles.episode}>
-      <div className={styles.headerImage}>
+      <div className={styles.imageContainer}>
+        <Link href="/">
+          <button onClick={() => console.log('back')}>
+            <img src="/arrow-left.svg" alt="Voltar" />
+          </button>
+        </Link>
         <Image
           width={1312}
           height={320}
@@ -32,11 +38,8 @@ export default function Episode({ episode }: EpisodeProps) {
           alt={episode.title}
           objectFit="cover"
         />
-        <button onClick={() => console.log('back')}>
-          <img src="/arrow-left.svg" alt="Voltar" />
-        </button>
         <button onClick={() => console.log('play')}>
-          <img src="/play-green.svg" alt="Próximo" />
+          <img src="/play.svg" alt="Tocar episódio" />
         </button>
       </div>
       <div className={styles.content}>
@@ -47,8 +50,7 @@ export default function Episode({ episode }: EpisodeProps) {
           <span>{episode.durationFormatted}</span>
         </div>
         <hr />
-        <p>
-          <div className={styles.description} dangerouslySetInnerHTML={{ __html: episode.description }} /></p>
+        <p className={styles.description} dangerouslySetInnerHTML={{ __html: episode.description }} />
       </div>
     </div>
   );
