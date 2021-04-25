@@ -1,5 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { api } from '../api';
 import { EpisodeData } from '../models/data/episode';
 import format from 'date-fns/format';
@@ -41,7 +42,9 @@ export default function Home({ latestEpisodes, allEpisodes }: HomeProps) {
                 objectFit="cover"
               />
               <div className={styles.episodeDetails}>
-                <a href="">{episode.title}</a>
+                <Link href={`/episodes/${episode.id}`}>
+                  <a>{episode.title}</a>
+                </Link>
                 <p>{episode.members}</p>
                 <div>
                   <span>{episode.publishedAtFormatted}</span>
@@ -79,7 +82,11 @@ export default function Home({ latestEpisodes, allEpisodes }: HomeProps) {
                     objectFit="cover"
                   />
                 </td>
-                <td><a href="">{episode.title}</a></td>
+                <td>
+                  <Link href={`/episodes/${episode.id}`}>
+                    <a>{episode.title}</a>
+                  </Link>
+                </td>
                 <td>{episode.members}</td>
                 <td style={{ width: 100 }}>{episode.publishedAtFormatted}</td>
                 <td>{episode.durationFormatted}</td>
