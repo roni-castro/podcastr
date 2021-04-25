@@ -24,12 +24,6 @@ export interface EpisodeProps {
 }
 
 export default function Episode({ episode }: EpisodeProps) {
-  const route = useRouter();
-
-  if (route.isFallback) {
-    return <p>Carregando...</p>;
-  }
-
   return (
     <div className={styles.episode}>
       <div className={styles.imageContainer}>
