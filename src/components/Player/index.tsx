@@ -32,7 +32,7 @@ export function Player() {
         <div className={styles.currentEpisode}>
           <Image
             width={592}
-            height={692}
+            height={592}
             src={currentEpisode.thumbnail}
             priority={true}
             objectFit="cover"
