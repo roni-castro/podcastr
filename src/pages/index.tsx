@@ -9,6 +9,7 @@ import { parseISO } from 'date-fns';
 import { convertDurationToTimeFormatted } from '../utils/time';
 import styles from './home.module.scss';
 import { PlayGreenButton } from '../components/PlayGreenButton';
+import { usePlayer } from '../hooks/PlayerContext';
 
 interface EpisodeVM {
   id: string;
@@ -17,6 +18,8 @@ interface EpisodeVM {
   publishedAtFormatted: string;
   durationFormatted: string;
   thumbnail: string;
+  duration: number;
+  url: string;
 }
 
 export interface HomeProps {
@@ -25,6 +28,7 @@ export interface HomeProps {
 }
 
 export default function Home({ latestEpisodes, allEpisodes }: HomeProps) {
+  const { addToPlayList } = usePlayer();
 
   return (
     <div className={styles.homePageContainer}>
@@ -52,7 +56,11 @@ export default function Home({ latestEpisodes, allEpisodes }: HomeProps) {
                 </div>
               </div>
               <div className={styles.button}>
-                <PlayGreenButton containerSize="2.5rem" iconSize="1.5rem" onClick={() => console.log('clicked')} />
+                <PlayGreenButton
+                  containerSize="2.5rem"
+                  iconSize="1.5rem"
+                  onClick={() => addToPlayList(episode)}
+                />
               </div>
             </li>
           ))}
@@ -91,7 +99,11 @@ export default function Home({ latestEpisodes, allEpisodes }: HomeProps) {
                 <td style={{ width: 100 }}>{episode.publishedAtFormatted}</td>
                 <td>{episode.durationFormatted}</td>
                 <td>
-                  <PlayGreenButton containerSize="2rem" iconSize="1rem" onClick={() => console.log('clicked')} />
+                  <PlayGreenButton
+                    containerSize="2rem"
+                    iconSize="1rem"
+                    onClick={() => addToPlayList(episode)}
+                  />
                 </td>
               </tr>
             ))}
@@ -114,6 +126,8 @@ function mapEpisodesDataToHomeProps(episodesData: EpisodeData[]): HomeProps {
       title: episodeData.title,
       members: episodeData.members,
       thumbnail: episodeData.thumbnail,
+      duration: episodeData.file.duration,
+      url: episodeData.file.url,
       publishedAtFormatted,
       durationFormatted
     };
