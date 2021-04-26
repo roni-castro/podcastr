@@ -7,7 +7,7 @@ import styles from './styles.module.scss';
 
 export function Player() {
   const { isPlaying, currentEpisode, play, pause } = usePlayer();
-  const audioRef = useRef(null);
+  const audioRef = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
     if (!audioRef.current) {
