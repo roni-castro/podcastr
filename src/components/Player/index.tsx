@@ -39,19 +39,21 @@ export function Player() {
           />
           <strong>{currentEpisode.title}</strong>
           <span>{currentEpisode.members}</span>
-
-          <audio
-            autoPlay
-            ref={audioRef}
-            src={currentEpisode.url}
-            onPlay={play}
-            onPause={pause}
-          />
         </div>
       ) : (
         <div className={styles.emptyPlayer}>
           <strong>Selecione um podcast para ouvir</strong>
         </div>
+      )}
+
+      {currentEpisode && (
+        <audio
+          autoPlay
+          ref={audioRef}
+          src={currentEpisode.url}
+          onPlay={play}
+          onPause={pause}
+        />
       )}
 
       <footer className={currentEpisode ? '' : styles.empty} >
