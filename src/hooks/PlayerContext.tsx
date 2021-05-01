@@ -13,11 +13,13 @@ interface Episode {
 interface PlayerContextData {
   isPlaying: boolean,
   hasNextEpisode: boolean,
+  hasPreviousEpisode: boolean,
   currentEpisode: Episode;
   playTheList: (newEpisodes: Episode[], episodeToPlayIndex: number) => void,
   playItem: (episode: Episode) => void,
   play: () => void,
   next: () => void,
+  previous: () => void,
   pause: () => void,
 }
 
@@ -38,6 +40,7 @@ export function PlayerProvider(props) {
 
   const currentEpisode: Episode | null = playList[currentEpisodeIndex] || null;
   const hasNextEpisode = Boolean(playList[currentEpisodeIndex + 1]);
+  const hasPreviousEpisode = Boolean(playList[currentEpisodeIndex - 1]);
 
   const playTheList = (episodes: Episode[], episodeToPlayIndex: number) => {
     if (episodeToPlayIndex === currentEpisodeIndex) {
@@ -60,6 +63,12 @@ export function PlayerProvider(props) {
     }
   };
 
+  const previous = () => {
+    if (hasPreviousEpisode) {
+      setCurrentEpisodeIndex(currentEpisodeIndex - 1);
+    }
+  };
+
   const play = () => {
     setIsPlaying(true);
   };
@@ -74,7 +83,9 @@ export function PlayerProvider(props) {
     playTheList,
     playItem,
     hasNextEpisode,
+    hasPreviousEpisode,
     next,
+    previous,
     play,
     pause,
   };

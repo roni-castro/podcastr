@@ -6,7 +6,7 @@ import { usePlayer } from '../../hooks/PlayerContext';
 import styles from './styles.module.scss';
 
 export function Player() {
-  const { isPlaying, currentEpisode, hasNextEpisode, next, play, pause } = usePlayer();
+  const { isPlaying, currentEpisode, hasNextEpisode, hasPreviousEpisode, previous, next, play, pause } = usePlayer();
   const audioRef = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
@@ -77,7 +77,7 @@ export function Player() {
           <button disabled={!currentEpisode}>
             <img src="/shuffle.svg" alt="Embaralhar" />
           </button>
-          <button disabled={!currentEpisode}>
+          <button disabled={!hasPreviousEpisode} onClick={previous}>
             <img src="/play-previous.svg" alt="Anterior" />
           </button>
           {isPlaying ? (
