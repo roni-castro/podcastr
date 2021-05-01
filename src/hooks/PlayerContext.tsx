@@ -12,7 +12,8 @@ interface Episode {
 interface PlayerContextData {
   isPlaying: boolean,
   currentEpisode: Episode;
-  addToPlayList: (episode: Episode) => void,
+  playTheList: (newEpisodes: Episode[], episodeToPlayIndex: number) => void,
+  playItem: (episode: Episode) => void,
   play: () => void,
   pause: () => void,
 }
@@ -29,18 +30,22 @@ export function usePlayer() {
 
 export function PlayerProvider(props) {
   const [playList, setPlaylist] = useState<Episode[]>([]);
-  const [currentEpisode, setCurrentEpisode] = useState(null);
+  const [currentEpisodeIndex, setCurrentEpisodeIndex] = useState<number>(-1);
   const [isPlaying, setIsPlaying] = useState(false);
 
-  const addToPlayList = useCallback((episodeToPlay: Episode) => {
-    const episodeFound: Episode | undefined = playList.find(episode => episode.id === episodeToPlay.id);
+  const currentEpisode: Episode | null = playList[currentEpisodeIndex] || null;
 
-    if (!episodeFound) {
-      setPlaylist(currentEpisodes => [...currentEpisodes, episodeToPlay]);
-    }
-    setCurrentEpisode(episodeToPlay);
+  const playTheList = useCallback((episodes: Episode[], episodeToPlayIndex: number) => {
+    setPlaylist(episodes);
+    setCurrentEpisodeIndex(episodeToPlayIndex);
     setIsPlaying(true);
-  }, [playList]);
+  }, []);
+
+  const playItem = useCallback((episodeToPlay: Episode) => {
+    setPlaylist([episodeToPlay]);
+    setCurrentEpisodeIndex(0);
+    setIsPlaying(true);
+  }, []);
 
   const play = useCallback(() => {
     setIsPlaying(true);
@@ -53,10 +58,10 @@ export function PlayerProvider(props) {
   const value = useMemo(() => ({
     isPlaying,
     currentEpisode,
-    addToPlayList,
+    playTheList,
     play,
     pause,
-  }), [isPlaying, currentEpisode, addToPlayList, play, pause]);
+  }), [isPlaying, currentEpisode, playTheList, playItem, play, pause]);
 
   return <PlayerContext.Provider
     value={value}

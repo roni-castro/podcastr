@@ -28,14 +28,16 @@ export interface HomeProps {
 }
 
 export default function Home({ latestEpisodes, allEpisodes }: HomeProps) {
-  const { addToPlayList } = usePlayer();
+  const { playTheList } = usePlayer();
+
+  const episodeList = [...allEpisodes, ...latestEpisodes];
 
   return (
     <div className={styles.homePageContainer}>
       <section className={styles.latestEpisodes}>
         <h2 >Últimos lançamentos</h2>
         <ul>
-          {latestEpisodes.map(episode => (
+          {latestEpisodes.map((episode, index) => (
             <li key={episode.id}>
               <Image
                 className={styles.thumbnail}
@@ -59,7 +61,7 @@ export default function Home({ latestEpisodes, allEpisodes }: HomeProps) {
                 <PlayGreenButton
                   containerSize="2.5rem"
                   iconSize="1.5rem"
-                  onClick={() => addToPlayList(episode)}
+                  onClick={() => playTheList(episodeList, index)}
                 />
               </div>
             </li>
@@ -78,7 +80,7 @@ export default function Home({ latestEpisodes, allEpisodes }: HomeProps) {
             </tr>
           </thead>
           <tbody>
-            {allEpisodes.map(episode => (
+            {allEpisodes.map((episode, index) => (
               <tr key={episode.id}>
                 <td style={{ width: 72 }}>
                   <Image
@@ -102,7 +104,7 @@ export default function Home({ latestEpisodes, allEpisodes }: HomeProps) {
                   <PlayGreenButton
                     containerSize="2rem"
                     iconSize="1rem"
-                    onClick={() => addToPlayList(episode)}
+                    onClick={() => playTheList(episodeList, index)}
                   />
                 </td>
               </tr>
