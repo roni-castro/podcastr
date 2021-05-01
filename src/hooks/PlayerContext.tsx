@@ -60,12 +60,14 @@ export function PlayerProvider(props) {
   const next = () => {
     if (hasNextEpisode) {
       setCurrentEpisodeIndex(currentEpisodeIndex + 1);
+      setIsPlaying(true);
     }
   };
 
   const previous = () => {
     if (hasPreviousEpisode) {
       setCurrentEpisodeIndex(currentEpisodeIndex - 1);
+      setIsPlaying(true);
     }
   };
 

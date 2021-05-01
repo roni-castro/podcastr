@@ -19,7 +19,7 @@ export function Player() {
     } else {
       audioRef.current.pause();
     }
-  }, [isPlaying]);
+  }, [isPlaying, currentEpisode]);
 
   return (
     <div className={styles.playerContainer}>
@@ -48,7 +48,6 @@ export function Player() {
 
       {currentEpisode && (
         <audio
-          autoPlay
           ref={audioRef}
           src={currentEpisode.url}
           onPlay={play}
