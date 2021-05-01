@@ -118,7 +118,7 @@ export default function Home({ latestEpisodes, allEpisodes }: HomeProps) {
 }
 
 function mapEpisodesDataToHomeProps(episodesData: EpisodeData[]): HomeProps {
-  const allEpisodes: EpisodeVM[] = episodesData.map(episodeData => {
+  const episodes: EpisodeVM[] = episodesData.map(episodeData => {
     const publishedAtFormatted =
       format(parseISO(episodeData.published_at), 'd MMM yy', { locale: ptBR });
     const durationFormatted =
@@ -134,7 +134,8 @@ function mapEpisodesDataToHomeProps(episodesData: EpisodeData[]): HomeProps {
       durationFormatted
     };
   });
-  const latestEpisodes = allEpisodes.slice(0, 2);
+  const latestEpisodes = episodes.slice(0, 2);
+  const allEpisodes = episodes.slice(2, episodes.length);
   return { latestEpisodes, allEpisodes };
 }
 
