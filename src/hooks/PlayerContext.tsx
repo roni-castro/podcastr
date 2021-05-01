@@ -1,4 +1,5 @@
-import { createContext, useCallback, useContext, useMemo, useState } from 'react';
+import React from 'react';
+import { createContext, useContext, useState } from 'react';
 
 interface Episode {
   id: string;
@@ -35,33 +36,34 @@ export function PlayerProvider(props) {
 
   const currentEpisode: Episode | null = playList[currentEpisodeIndex] || null;
 
-  const playTheList = useCallback((episodes: Episode[], episodeToPlayIndex: number) => {
+  const playTheList = (episodes: Episode[], episodeToPlayIndex: number) => {
     setPlaylist(episodes);
     setCurrentEpisodeIndex(episodeToPlayIndex);
     setIsPlaying(true);
-  }, []);
+  };
 
-  const playItem = useCallback((episodeToPlay: Episode) => {
+  const playItem = (episodeToPlay: Episode) => {
     setPlaylist([episodeToPlay]);
     setCurrentEpisodeIndex(0);
     setIsPlaying(true);
-  }, []);
+  };
 
-  const play = useCallback(() => {
+  const play = () => {
     setIsPlaying(true);
-  }, []);
+  };
 
-  const pause = useCallback(() => {
+  const pause = () => {
     setIsPlaying(false);
-  }, []);
+  };
 
-  const value = useMemo(() => ({
+  const value = () => ({
     isPlaying,
     currentEpisode,
     playTheList,
+    playItem,
     play,
     pause,
-  }), [isPlaying, currentEpisode, playTheList, playItem, play, pause]);
+  });
 
   return <PlayerContext.Provider
     value={value}
