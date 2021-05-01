@@ -30,7 +30,7 @@ export interface HomeProps {
 export default function Home({ latestEpisodes, allEpisodes }: HomeProps) {
   const { playTheList } = usePlayer();
 
-  const episodeList = [...allEpisodes, ...latestEpisodes];
+  const episodeList = [...latestEpisodes, ...allEpisodes];
 
   return (
     <div className={styles.homePageContainer}>
@@ -104,7 +104,7 @@ export default function Home({ latestEpisodes, allEpisodes }: HomeProps) {
                   <PlayGreenButton
                     containerSize="2rem"
                     iconSize="1rem"
-                    onClick={() => playTheList(episodeList, index)}
+                    onClick={() => playTheList(episodeList, index + latestEpisodes.length)}
                   />
                 </td>
               </tr>

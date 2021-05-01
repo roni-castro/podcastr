@@ -12,10 +12,12 @@ interface Episode {
 
 interface PlayerContextData {
   isPlaying: boolean,
+  hasNextEpisode: boolean,
   currentEpisode: Episode;
   playTheList: (newEpisodes: Episode[], episodeToPlayIndex: number) => void,
   playItem: (episode: Episode) => void,
   play: () => void,
+  next: () => void,
   pause: () => void,
 }
 
@@ -35,8 +37,12 @@ export function PlayerProvider(props) {
   const [isPlaying, setIsPlaying] = useState(false);
 
   const currentEpisode: Episode | null = playList[currentEpisodeIndex] || null;
+  const hasNextEpisode = Boolean(playList[currentEpisodeIndex + 1]);
 
   const playTheList = (episodes: Episode[], episodeToPlayIndex: number) => {
+    if (episodeToPlayIndex === currentEpisodeIndex) {
+      return;
+    }
     setPlaylist(episodes);
     setCurrentEpisodeIndex(episodeToPlayIndex);
     setIsPlaying(true);
@@ -48,6 +54,12 @@ export function PlayerProvider(props) {
     setIsPlaying(true);
   };
 
+  const next = () => {
+    if (hasNextEpisode) {
+      setCurrentEpisodeIndex(currentEpisodeIndex + 1);
+    }
+  };
+
   const play = () => {
     setIsPlaying(true);
   };
@@ -56,14 +68,16 @@ export function PlayerProvider(props) {
     setIsPlaying(false);
   };
 
-  const value = () => ({
+  const value = {
     isPlaying,
     currentEpisode,
     playTheList,
     playItem,
+    hasNextEpisode,
+    next,
     play,
     pause,
-  });
+  };
 
   return <PlayerContext.Provider
     value={value}
