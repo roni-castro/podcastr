@@ -49,7 +49,6 @@ export function PlayerProvider(props) {
   const canShuffle = playList.length > 1;
   const currentEpisode: Episode | undefined = playList[currentEpisodeIndex];
   const hasNextEpisode = isShuffling || Boolean(playList[currentEpisodeIndex + 1]);
-  console.log(hasNextEpisode);
   const hasPreviousEpisode = Boolean(playList[currentEpisodeIndex - 1]);
 
   const playTheList = (episodes: Episode[], episodeToPlayIndex: number) => {
@@ -64,6 +63,7 @@ export function PlayerProvider(props) {
   const playItem = (episodeToPlay: Episode) => {
     setPlaylist([episodeToPlay]);
     setCurrentEpisodeIndex(0);
+    setIsShuffling(false)
     setIsPlaying(true);
   };
 

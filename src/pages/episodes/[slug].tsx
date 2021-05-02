@@ -48,14 +48,14 @@ export default function Episode({ episode }: EpisodeProps) {
         </button>
       </div>
       <div className={styles.content}>
-        <h2>Como começar na programação em 2021 do jeito certo</h2>
+        <h2>{episode.title}</h2>
         <div>
           <span>{episode.members}</span>
           <span>{episode.publishedAtFormatted}</span>
           <span>{episode.durationFormatted}</span>
         </div>
         <hr />
-        <p className={styles.description} dangerouslySetInnerHTML={{ __html: episode.description }} />
+        <div className={styles.description} dangerouslySetInnerHTML={{ __html: episode.description }} />
       </div>
     </div>
   );
