@@ -6,7 +6,21 @@ import { usePlayer } from '../../hooks/PlayerContext';
 import styles from './styles.module.scss';
 
 export function Player() {
-  const { isPlaying, currentEpisode, hasNextEpisode, hasPreviousEpisode, previous, next, play, pause } = usePlayer();
+  const {
+    isPlaying,
+    isLooping,
+    isShuffling,
+    canShuffle,
+    currentEpisode,
+    hasNextEpisode,
+    hasPreviousEpisode,
+    shuffle,
+    previous,
+    next,
+    play,
+    loop,
+    pause
+  } = usePlayer();
   const audioRef = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
@@ -48,6 +62,7 @@ export function Player() {
 
       {currentEpisode && (
         <audio
+          loop={isLooping}
           ref={audioRef}
           src={currentEpisode.url}
           onPlay={play}
@@ -73,7 +88,11 @@ export function Player() {
         </div>
 
         <div className={styles.controlButtons}>
-          <button disabled={!currentEpisode}>
+          <button
+            className={isShuffling ? styles.isActive : ''}
+            disabled={!canShuffle}
+            onClick={shuffle}
+          >
             <img src="/shuffle.svg" alt="Embaralhar" />
           </button>
           <button disabled={!hasPreviousEpisode} onClick={previous}>
@@ -91,7 +110,11 @@ export function Player() {
           <button disabled={!hasNextEpisode} onClick={next}>
             <img src="/play-next.svg" alt="Próxima" />
           </button>
-          <button disabled={!currentEpisode}>
+          <button
+            className={isLooping ? styles.isActive : ''}
+            disabled={!currentEpisode}
+            onClick={loop}
+          >
             <img src="/repeat.svg" alt="Repetir" />
           </button>
         </div>
