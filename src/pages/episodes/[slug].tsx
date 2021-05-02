@@ -1,5 +1,4 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
-import { useRouter } from 'next/router';
 import { api } from '../../api';
 import { format, parseISO } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
@@ -98,7 +97,7 @@ function mapEpisodeDataToEpisodeDetailVM(episode: EpisodeData): EpisodeDetailVM 
 }
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
-  const { slug } = ctx.params;
+  const slug = ctx.params?.slug;
 
   const { data } = await api.get<EpisodeData>(`/episodes/${slug}`);
   const episode = mapEpisodeDataToEpisodeDetailVM(data);
