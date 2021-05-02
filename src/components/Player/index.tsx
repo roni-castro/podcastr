@@ -1,9 +1,10 @@
 import Image from 'next/image';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 import { usePlayer } from '../../hooks/PlayerContext';
 import styles from './styles.module.scss';
+import { convertDurationToTimeFormatted } from '../../utils/time';
 
 export function Player() {
   const {
@@ -19,9 +20,11 @@ export function Player() {
     next,
     play,
     loop,
-    pause
+    pause,
+    clearPlaylist,
   } = usePlayer();
   const audioRef = useRef<HTMLAudioElement>(null);
+  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
     if (!audioRef.current) {
@@ -33,7 +36,41 @@ export function Player() {
     } else {
       audioRef.current.pause();
     }
-  }, [isPlaying, currentEpisode]);
+  }, [isPlaying]);
+
+  useEffect(() => {
+    if (!audioRef.current) {
+      return;
+    }
+    audioRef.current.currentTime = 0;
+    audioRef.current.play();
+
+    const handleTimeUpdate = () => {
+      setProgress(Math.floor(audioRef.current?.currentTime || 0));
+    };
+
+    audioRef.current.addEventListener('timeupdate', handleTimeUpdate);
+    return () => {
+      audioRef.current?.removeEventListener('timeupdate', handleTimeUpdate);
+    };
+  }, [currentEpisode]);
+
+  const handleSliderChange = (newValue: number) => {
+    if (!audioRef.current) {
+      return;
+    }
+    audioRef.current.currentTime = newValue;
+    setProgress(newValue);
+  };
+
+  const handleEpisodeEnded = () => {
+    if (hasNextEpisode) {
+      next();
+    } else {
+      setProgress(0);
+      clearPlaylist();
+    }
+  };
 
   return (
     <div className={styles.playerContainer}>
@@ -67,15 +104,19 @@ export function Player() {
           src={currentEpisode.url}
           onPlay={play}
           onPause={pause}
+          onEnded={handleEpisodeEnded}
         />
       )}
 
       <footer className={currentEpisode ? '' : styles.empty} >
         <div className={styles.progress}>
-          <span>00:00</span>
+          <span>{convertDurationToTimeFormatted(progress)}</span>
           <div className={styles.slider}>
             {currentEpisode ? (
               <Slider
+                max={currentEpisode.duration}
+                value={progress}
+                onChange={handleSliderChange}
                 trackStyle={{ backgroundColor: '#04d361' }}
                 railStyle={{ backgroundColor: '#9f75ff' }}
                 handleStyle={{ borderColor: '#04d361', borderWidth: 4 }}
@@ -84,7 +125,7 @@ export function Player() {
               <div className={styles.emptySlider} />
             )}
           </div>
-          <span>00:00</span>
+          <span>{convertDurationToTimeFormatted(currentEpisode?.duration ?? 0)}</span>
         </div>
 
         <div className={styles.controlButtons}>
@@ -121,4 +162,4 @@ export function Player() {
       </footer>
     </div >
   );
-}
+};
