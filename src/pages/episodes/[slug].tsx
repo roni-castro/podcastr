@@ -8,6 +8,7 @@ import { convertDurationToTimeFormatted } from '../../utils/time';
 import { EpisodeData } from '../../models/data/episode';
 import Image from 'next/image';
 import Link from 'next/link';
+import { usePlayer } from '../../hooks/PlayerContext';
 
 interface EpisodeDetailVM {
   id: string;
@@ -16,6 +17,8 @@ interface EpisodeDetailVM {
   description: string;
   publishedAtFormatted: string;
   durationFormatted: string;
+  duration: number;
+  url: string;
   thumbnail: string;
 }
 
@@ -24,11 +27,12 @@ export interface EpisodeProps {
 }
 
 export default function Episode({ episode }: EpisodeProps) {
+  const { playItem } = usePlayer();
   return (
     <div className={styles.episode}>
       <div className={styles.imageContainer}>
         <Link href="/">
-          <button onClick={() => console.log('back')}>
+          <button>
             <img src="/arrow-left.svg" alt="Voltar" />
           </button>
         </Link>
@@ -39,7 +43,7 @@ export default function Episode({ episode }: EpisodeProps) {
           alt={episode.title}
           objectFit="cover"
         />
-        <button onClick={() => console.log('play')}>
+        <button onClick={() => playItem(episode)}>
           <img src="/play.svg" alt="Tocar episódio" />
         </button>
       </div>
@@ -76,7 +80,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   };
 };
 
-function mapEpisodeDataToEpisodeDetailVM(episode: EpisodeData) {
+function mapEpisodeDataToEpisodeDetailVM(episode: EpisodeData): EpisodeDetailVM {
   const publishedAtFormatted =
     format(parseISO(episode.published_at), 'd MMM yy', { locale: ptBR });
   const durationFormatted = convertDurationToTimeFormatted(episode.file.duration);
@@ -86,6 +90,8 @@ function mapEpisodeDataToEpisodeDetailVM(episode: EpisodeData) {
     members: episode.members,
     description: episode.description,
     thumbnail: episode.thumbnail,
+    duration: episode.file.duration,
+    url: episode.file.url,
     publishedAtFormatted,
     durationFormatted
   };
